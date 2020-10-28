@@ -6,9 +6,8 @@
 </head>
 <body>
 <canvas id = "Mycanvas" width="300px" height="600px" style="border: black solid"></canvas>
-<canvas id = "canvastest" width="30px" height="60px" style="border: black solid"></canvas>
-<img src="../codegym/demo-oop2/Images/car.jpg" id="base-imgcar" style="display: none">
-<img src="../codegym/demo-oop2/Images/coin.png" id = "base-imgcoin" alt=" " style="display: none">
+<img src="car.jpg" id="base-imgcar" style="display: none">
+<img src="coin.png" id = "base-imgcoin" alt=" " style="display: none">
 </body>
 <script>
     let imgcar = document.getElementById("base-imgcar");
@@ -80,7 +79,7 @@ class CoinImage{
     }
 }
 function loop2() {
-    setInterval(function () {
+    function animation() {
         coin.drawcoin();
         coin.updateframe();
         if(Math.abs(coin.coinx-car.carx) < 30 && (car.cary - coin.coiny) <= 30 ){
@@ -97,7 +96,8 @@ function loop2() {
             coin.coinx = Math.floor(Math.random()*301);
         }
 
-    },50);
+    }
+    let animationloop = setInterval(animation,50);
 
 }
     function loop3() {
@@ -148,5 +148,6 @@ function moveSelection(evt) {
     }
 
 }
+
 </script>
 </html>
