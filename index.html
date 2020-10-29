@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bai tap dua xe</title>
+</head>
+<body>
+<canvas id = "Mycanvas" width="300px" height="600px" style="border: black solid"></canvas>;
+<img src="car.jpg" id="base-imgcar" style="display: none">;
+<img src="coin.png" id = "base-imgcoin" alt=" " style="display: none">;
+<img src="car with gun.jpg" id="withgun-imgcar" style="display: none">;
+<img src="bullet.png" id="imgbullet" style="display: none">;
+<img src="drone.jpg" id="imgdrone" style="display: none">;
+<audio src="flame-gun.mp3"id = "gunsound"></audio>
+</body>
+<script>
+    let count = 0 ;
+    let imgcar = document.getElementById("base-imgcar");
+    let imgcoin =document.getElementById("base-imgcoin");
+    let imgbullet = document.getElementById("imgbullet");
+    let imgdrone = document.getElementById("imgdrone");
+    let canvas = document.getElementById("Mycanvas");
+    let pen = canvas.getContext("2d");
+class Bullets {
+    constructor() {
+        this.bulletx = car.carx + 10;
+        this.bullety = car.cary;
+
+    }
+    loadBulletImage(){
+        pen.clearRect(this.bulletx,this.bullety + 5,3,9);
+        pen.clearRect(this.bulletx + 10,this.bullety + 5,3,9);
+       pen.drawImage(imgbullet,0,0,25,78,this.bulletx, this.bullety,3,9);
+        pen.drawImage(imgbullet,0,0,25,78,this.bulletx + 10, this.bullety,3,9);
+
+    }
+    bulletmoving(){
+
+        this.bullety -= 5;
+}
+}
+    class Car {
+        constructor() {
+            this.id = "BMW";
+            this.carx = 120;
+            this.cary = 500;
+        }
+
+        loadCarimage() {
+
+            pen.drawImage(imgcar, 0, 0, 260, 580, this.carx, this.cary, 40, 80);
+        }
+
+        moveright() {
+            pen.clearRect(this.carx, this.cary, 40, 80);
+            this.carx += 5;
+            this.loadCarimage();
+        }
+
+        moveleft() {
+            pen.clearRect(this.carx, this.cary, 40, 80);
+            this.carx -= 5
+            this.loadCarimage();
+        }
+        moveup(){
+            pen.clearRect(this.carx, this.cary, 40, 80);
+            this.cary -= 5
+            this.loadCarimage();
+        }
+        movedown(){
+            pen.clearRect(this.carx, this.cary, 40, 80);
+            this.cary += 5
+            this.loadCarimage();
+        }
+    }
+   let car = new Car();
+
+//    code để load hình ảnh cái xe
+    // bắt đầu code để hiện hình ảnh đồng xu quay tròn
+class CoinImage{
+    constructor(number) {
+        this.width = 440;
+        this.height = 100;
+        this.numberofframe = number;
+        this.frameindex = 2;
+        this.coinx = Math.floor(Math.random()*301);
+        this.coiny = 0;
+    }
+    updateframe(){
+        if(this.frameindex < this.numberofframe){
+            this.frameindex++;
+        }else{
+            this.frameindex = 0;
+        }
+    }
+    drawcoin(){
+        pen.clearRect(this.coinx,this.coiny-5,44,40)
+        pen.drawImage(imgcoin,this.width*this.frameindex/this.numberofframe,0,44,40,this.coinx,this.coiny,44,40);
+    }
+    coinfall(){
+
+        this.coiny += 5;
+    }
+}
+class Drone {
+    constructor() {
+        this.dronex = Math.floor(Math.random()*301);
+        this.droney = 0;
+    }
+    loadDroneImage(){
+        pen.clearRect(this.dronex,this.droney - 5,44,40);
+        pen.drawImage(imgdrone,0,0,527,484,this.dronex,this.droney,44,40);
+
+    }
+    movingDrone(){
+        this.droney += 5;
+    }
+}
+function loop2() {
+    function animation() {
+        coin.drawcoin();
+        coin.updateframe();
+        if(Math.abs(coin.coinx-car.carx) < 30 && (car.cary - coin.coiny) <= 30 ){
+            pen.clearRect(coin.coinx,coin.coiny,44,40);
+            coin.coiny = 0;
+            coin.coinx = Math.floor(Math.random()*301);
+            count +=1;
+            console.log(count);
+            if(count > 5){
+                imgcar = document.getElementById("withgun-imgcar");
+            }
+            car.loadCarimage();
+        }
+        coin.coinfall();
+        if(coin.coiny>600){
+            coin.coiny = 0;
+            coin.coinx = Math.floor(Math.random()*301);
+        }
+
+    }
+    let animationloop = setInterval(animation,50);
+
+}
+    function loop3() {
+        setInterval(function () {
+            coin2.drawcoin();
+            coin2.updateframe();
+            coin2.coinfall();
+            if(coin2.coiny>600){
+                coin2.coiny = 0;
+                coin2.coinx = Math.floor(Math.random()*301);
+            }
+            if(Math.abs(coin2.coinx-car.carx) < 30 && (500 - coin2.coiny) <= 40 ){
+                pen.clearRect(coin2.coinx,440,44,40);
+                coin2.coiny = 0;
+                coin2.coinx = Math.floor(Math.random()*301);
+                count +=1;
+                console.log(count);
+            }
+
+        },50);
+
+    }
+car.loadCarimage();
+let coin = new CoinImage(10);
+let coin2 = new CoinImage(10);
+   loop2();
+   let drones = [];
+    for (let i = 0; i < 2; i++) {
+        let drone = new Drone();
+        drones.push(drone);
+
+    }
+    for (let i = 0; i < 2; i++) {
+        setInterval(function () {
+            drones[i].loadDroneImage();
+            drones[i].movingDrone();
+            if (drones[i].droney > 600) {
+                drones[i].dronex = Math.floor(Math.random() * 301);
+                drones[i].droney = 0;
+            }
+            if (Math.abs(drones[i].dronex - car.carx) < 40 && (car.cary - drones[i].droney) <= 30 && (car.cary - drones[i].droney) > 0){
+                pen.clearRect(drones[i].dronex, drones[i].droney - 5, 44, 40);
+                drones[i].droney = 0;
+                drones[i].dronex = Math.floor(Math.random() * 301);
+                count += 1;
+                console.log(count);
+                alert("game over");
+            }
+                for (let j = 0; j < bullets.length; j++) {
+                    let k = Math.abs(bullets[j].bulletx - drones[i].dronex);
+                    let h = bullets[j].bullety - drones[i].droney;
+                    if (k > 10 && k < 44 && h > 0 && h < 30) {
+                        pen.clearRect(drones[i].dronex, drones[i].droney - 5, 44, 40);
+                        drones[i].droney = 0;
+                        drones[i].dronex = Math.floor(Math.random() * 301);
+                        count += 1;
+                        console.log(count);
+                        break;
+                    }
+                }
+        }
+            ,50)
+    }
+   // loop3();
+//code xong hình ảnh đồng xu quay tròn rơi xuống
+//    bắt đầu code cho xe dịch chuyển
+    function docReady() {
+        window.addEventListener('keydown', moveSelectioncar);
+    }
+    function docreadey2(){
+        window.addEventListener("keypress", moveSelectionbullet);
+    }
+    docReady();
+    docreadey2();
+    // code đạn bắn ra từ ô tô
+    let bullets = [];
+    function moveSelectionbullet() {
+        if (count>5){
+        switch (event.keyCode) {
+        case 32:
+            document.getElementById("gunsound").onplaying;
+            let bullet = new Bullets();
+            bullets.push(bullet);
+            setInterval(function () {
+                bullet.bulletmoving();
+                bullet.loadBulletImage();
+
+
+            },50)
+                break;
+        }
+        }
+    }
+function moveSelectioncar(evt) {
+    switch (evt.keyCode) {
+        case 37:
+            car.moveleft();
+            break;
+        case 39:
+            car.moveright();
+            break;
+        case 38:
+            car.moveup();
+            break;
+        case 40:
+            car.movedown();
+            break;
+    }
+
+}
+//dat dieu kien de chuyen sang anh xe co sung
+
+</script>
+</html>
