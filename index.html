@@ -5,12 +5,12 @@
     <title>Bai tap dua xe</title>
 </head>
 <body>
-<canvas id = "Mycanvas" width="300px" height="600px" style="border: black solid"></canvas>;
-<img src="car.jpg" id="base-imgcar" style="display: none">;
-<img src="coin.png" id = "base-imgcoin" alt=" " style="display: none">;
-<img src="car with gun.jpg" id="withgun-imgcar" style="display: none">;
-<img src="bullet.png" id="imgbullet" style="display: none">;
-<img src="drone.jpg" id="imgdrone" style="display: none">;
+<canvas id = "Mycanvas" width="300px" height="600px" style="border: black solid"></canvas>
+<img src="car.jpg" id="base-imgcar" style="display: none">
+<img src="coin.png" id = "base-imgcoin" alt=" " style="display: none">
+<img src="car with gun.jpg" id="withgun-imgcar" style="display: none">
+<img src="bullet.png" id="imgbullet" style="display: none">
+<img src="drone.jpg" id="imgdrone" style="display: none">
 <audio src="flame-gun.mp3"id = "gunsound"></audio>
 </body>
 <script>
@@ -190,7 +190,7 @@ let coin2 = new CoinImage(10);
                 for (let j = 0; j < bullets.length; j++) {
                     let k = Math.abs(bullets[j].bulletx - drones[i].dronex);
                     let h = bullets[j].bullety - drones[i].droney;
-                    if (k > 10 && k < 44 && h > 0 && h < 30) {
+                    if (k > 0 && k < 44 && h > 0 && h < 30) {
                         pen.clearRect(drones[i].dronex, drones[i].droney - 5, 44, 40);
                         drones[i].droney = 0;
                         drones[i].dronex = Math.floor(Math.random() * 301);
@@ -219,7 +219,6 @@ let coin2 = new CoinImage(10);
         if (count>5){
         switch (event.keyCode) {
         case 32:
-            document.getElementById("gunsound").onplaying;
             let bullet = new Bullets();
             bullets.push(bullet);
             setInterval(function () {
